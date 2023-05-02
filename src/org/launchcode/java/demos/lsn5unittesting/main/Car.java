@@ -16,6 +16,7 @@ public class Car {
         // Gas tank level defaults to a full tank
         this.gasTankLevel = gasTankSize;
         this.milesPerGallon = milesPerGallon;
+        //why are some parameters included but not all??
     }
 
     public String getMake() {
@@ -35,30 +36,39 @@ public class Car {
     }
 
     public int getGasTankSize() {
+
         return gasTankSize;
     }
 
     public void setGasTankSize(int gasTankSize) {
+
         this.gasTankSize = gasTankSize;
     }
 
     public double getGasTankLevel() {
+
         return gasTankLevel;
     }
 
     public void setGasTankLevel(double gasTankLevel) {
+        if (gasTankLevel > this.getGasTankSize()) {
+            throw new IllegalArgumentException("Can't exceed tank size");
+        }
         this.gasTankLevel = gasTankLevel;
     }
 
     public double getMilesPerGallon() {
+
         return milesPerGallon;
     }
 
     public void setMilesPerGallon(double milesPerGallon) {
+
         this.milesPerGallon = milesPerGallon;
     }
 
     public double getOdometer() {
+
         return odometer;
     }
 
@@ -83,6 +93,10 @@ public class Car {
         double gallonsUsed = milesAbleToTravel / this.milesPerGallon;
         this.gasTankLevel = this.gasTankLevel - gallonsUsed;
         this.odometer += milesAbleToTravel;
+    }
+
+    public void addGas(double gas) {
+        this.setGasTankLevel(gas + this.getGasTankLevel());
     }
 
 }

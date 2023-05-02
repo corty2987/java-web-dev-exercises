@@ -30,18 +30,22 @@ public class Case {
     }
 
     public ArrayList<Flavor> getFlavors() {
+
         return flavors;
     }
 
     public ArrayList<Cone> getCones() {
+
         return cones;
     }
 
     public void setFlavors(ArrayList<Flavor> flavors) {
+
         this.flavors = flavors;
     }
 
     public void setCones(ArrayList<Cone> cones) {
+
         this.cones = cones;
     }
 }

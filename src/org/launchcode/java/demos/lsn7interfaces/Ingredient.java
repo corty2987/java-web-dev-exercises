@@ -14,26 +14,32 @@ public abstract class Ingredient {
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public double getCost() {
+
         return cost;
     }
 
     public void setCost(double cost) {
+
         this.cost = cost;
     }
 
     public ArrayList<String> getAllergens() {
+
         return allergens;
     }
 
     public void setAllergens(ArrayList<String> allergens) {
+
         this.allergens = allergens;
     }
 
