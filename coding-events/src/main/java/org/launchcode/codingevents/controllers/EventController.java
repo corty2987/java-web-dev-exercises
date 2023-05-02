@@ -10,15 +10,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Controller
 @RequestMapping("events")
 public class EventController {
 
     private static List<String> events = new ArrayList<>();
+//    private static Map<String, String> events = new HashMap<>();
 
     @GetMapping
     public String displayAllEvents(Model model) {
-//        model.addAttribute("title", "All Events");
+        model.addAttribute("title", "All Events");
         model.addAttribute("events", events);
         return "events/index";
     }
