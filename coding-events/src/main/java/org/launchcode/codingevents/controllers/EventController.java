@@ -50,19 +50,27 @@ public class EventController {
     @GetMapping("edit/{eventId}") //include the path variable eventId so paths like /events/edit/3 will work
     public String displayEditForm(Model model, @PathVariable int eventId){
         //Use an EventData method to find the event object with the given eventId
-//        EventData.getById(eventId);
+
         Event eventToEdit = EventData.getById(eventId);
 
         // Put the event object in the model with .addAttribute()
-//        model.addAttribute("event", EventData.getById(eventId));
-        model.addAttribute("event", eventToEdit);
+        model.addAttribute("event", EventData.getById(eventId));
+
         String title = "Edit Event " + eventToEdit.getName() + " (id=" + eventToEdit.getId() + ")";
         model.addAttribute("title", title);
 
         //Return the appropriate template string
         return "events/edit";
     }
+    @PostMapping("edit")
+    public String processEditForm(int eventId, String name, String description) {
 
+        Event eventToEdit = EventData.getById(eventId);
+        eventToEdit.setName(name);
+        eventToEdit.setDescription(description);
+
+        return "redirect:";
+    }
 
 
 

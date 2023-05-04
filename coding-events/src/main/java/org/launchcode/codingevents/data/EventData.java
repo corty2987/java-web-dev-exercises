@@ -29,6 +29,7 @@ public class EventData {
 
     //remove an event
     public static void  remove(int id) {
+
         events.remove(id);
     }
 

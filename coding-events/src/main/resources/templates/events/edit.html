@@ -5,21 +5,23 @@
 
 <header th:replace="fragments :: header"></header>
 
-<form method="post">
+<!--Get the name and description from the event that was passed in via the model and set them as the values of the form fields.-->
+<form method="post" th:action="@{/events/edit}">
     <div class="form-group">
         <label>Name
-            <input type="text" name="name" class="form-control">
+            <input type="text" name="name" th:value="${event.name}" class="form-control">
             <!--                                        "name" has to match the field names of the event object in Event.java-->
         </label>
     </div>
     <div class="form-group">
         <label>Description
-            <input type="text" name="description" class="form-control">
+            <input type="text" name="description" th:value="${event.description}" class="form-control">
         </label>
     </div>
     <div class="form-group">
         <input type="submit" value="Edit Event" class="btn btn-success">
     </div>
+    <input type="hidden" th:value="${event.id}" name="eventId" />
 </form>
 
 </body>
