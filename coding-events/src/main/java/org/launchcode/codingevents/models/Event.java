@@ -1,8 +1,12 @@
 package org.launchcode.codingevents.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.validation.constraints.Email;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -14,44 +18,33 @@ public class Event extends AbstractEntity {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @Size(max = 500, message = "Description too long!")
-    private String description;
+    @OneToOne(cascade = CascadeType.ALL) //cascade every operation on an event object down into the details the sub object
+    @Valid //need this because when we want to validate our new event object in our controller (handler method/form submission/model binding) when we add valid to the event it will validate the top level fields ex. name and category
+    @NotNull
+    private EventDetails eventDetails;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email. Try again")
-    private String contactEmail;
-
-
-    private EventType type; //don't need validation bc enums are restricted to the values you assign them
+    @ManyToOne //one eventCategory to many events
+    @NotNull(message = "Category is required")
+    private EventCategory eventCategory; //don't need validation bc enums are restricted to the values you assign them
 
     //when adding another private field, you must add another input element to the create event form with a name=numberOfAttendees attribute
 
 
-    public Event(String name, String description, String contactEmail, EventType type) {
+    public Event(String name, EventCategory eventCategory) {
         this.name = name;
-        this.description = description;
-        this.contactEmail = contactEmail;
-        this.type = type;
+        this.eventCategory = eventCategory;
 
     }
 
     public Event() {
-    } //no R constructor??
+    } //no arg constructor
 
-    public EventType getType() {
-        return type;
+    public EventCategory getEventCategory() {
+        return eventCategory;
     }
 
-    public void setType(EventType type) {
-        this.type = type;
-    }
-
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
+    public void setEventCategory(EventCategory eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     public String getName() {
@@ -62,18 +55,18 @@ public class Event extends AbstractEntity {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 
     @Override
     public String toString() {
         return name;
+    }
+
+    public EventDetails getEventDetails() {
+        return eventDetails;
+    }
+
+    public void setEventDetails(EventDetails eventDetails) {
+        this.eventDetails = eventDetails;
     }
 }
 

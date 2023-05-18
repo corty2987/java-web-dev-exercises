@@ -5,8 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
-@MappedSuperclass
-public abstract class AbstractEntity {
+@MappedSuperclass //the fields in this class should be pushed into the tables of the fields that extend it
+public abstract class AbstractEntity { //you can only use an abstract class by extending it
     @Id //primary key
     @GeneratedValue //generate values for primary key
     private int id;
