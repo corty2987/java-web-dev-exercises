@@ -2,8 +2,11 @@ package org.launchcode.codingevents.controllers;
 
 import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.data.EventRepository;
+import org.launchcode.codingevents.data.TagRepository;
 import org.launchcode.codingevents.models.Event;
 import org.launchcode.codingevents.models.EventCategory;
+import org.launchcode.codingevents.models.Tag;
+import org.launchcode.codingevents.models.dto.EventTagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,8 @@ public class EventController {
 
     @Autowired
     private EventCategoryRepository eventCategoryRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @GetMapping
     public String displayAllEvents(@RequestParam(required = false) Integer categoryId, Model model) {
@@ -94,7 +99,39 @@ public class EventController {
             Event event = result.get();
             model.addAttribute("title", event.getName() + " Details");
             model.addAttribute("event", event);
+            model.addAttribute("tags", event.getTags());
         }
         return "events/detail";
+    }
+
+    //responds to /events/add-tag?eventId=13
+    @GetMapping("add-tag")
+    public String displayAddTagForm(@RequestParam Integer eventId, Model model) {
+        Optional<Event> result = eventRepository.findById(eventId);
+        Event event = result.get();
+        model.addAttribute("title", "Add Tag to: " + event.getName()); //passing title into view
+        model.addAttribute("tags", tagRepository.findAll()); //drop down of list of tags available w repository
+        EventTagDTO eventTag = new EventTagDTO();
+        eventTag.setEvent(event);
+        model.addAttribute("eventTag", eventTag);
+        //pass the event object into form bc form needs to know which event the form needs to add a tag to
+        //use model binding with DTO(event tag) to allow us to pass a single object that can be validated and that object will be an instance of EventTagDTO
+        return "events/add-tag.html";
+    }
+
+    @PostMapping("add-tag")
+    public String processAddTagForm(@ModelAttribute @Valid EventTagDTO eventTag,
+                                    Model model, Errors errors) {
+        if (!errors.hasErrors()) {
+            Event event = eventTag.getEvent();
+            Tag tag = eventTag.getTag();
+            if (!event.getTags().contains(tag)) {
+                event.addTag(tag);
+                eventRepository.save(event); //call save again when you need to update data
+            }
+            return "redirect:detail?eventId=" + event.getId();
+        }
+        return "redirect:add-tag";
+
     }
 }

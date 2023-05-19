@@ -12,6 +12,9 @@ public class Tag extends AbstractEntity {
     @Size(min = 1, max = 25)
     @NotBlank
     private String name;
+    @ManyToMany(mappedBy = "tags") //tells hibernate to figure out which events have the tag object in the tag field on that particular class
+    private final List<Event> events = new ArrayList<>();
+
 
     public Tag(String name) {
         this.name = name;
@@ -28,5 +31,9 @@ public class Tag extends AbstractEntity {
 
     public String getDisplayName() {
         return "#" + name + " ";
+    }
+
+    public List<Event> getEvents() {
+        return events;
     }
 }
